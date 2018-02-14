@@ -1,5 +1,3 @@
-
-
-exports.ajouterClient = function(){
-    
+exports.ajouterClient = function(client){
+    global.db.collection("client").insert(client);
 };
