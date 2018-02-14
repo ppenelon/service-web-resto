@@ -16,7 +16,9 @@ app.get('/:requete/:parametres', function(requete, reponse){
 		var module = require(require.resolve(`./src/requetes/${requete.params.requete}`));
 
 		reponse.setHeader('Content-Type', 'application/json');
-		reponse.end(JSON.stringify(module(JSON.parse(requete.params.parametres))));
+		module(JSON.parse(requete.params.parametres), function(resultat){
+			reponse.end(JSON.stringify(resultat));
+		});
 	}
 	catch(e) {
 	    reponse.status(400).send('Bad Request');
