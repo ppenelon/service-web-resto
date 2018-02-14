@@ -1,3 +1,3 @@
 exports.ajouterClient = function(client){
-    global.db.collection("client").insert(client);
+    global.bdd.collection("client").insert(client);
 };
