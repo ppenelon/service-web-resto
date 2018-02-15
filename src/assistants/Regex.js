@@ -11,5 +11,5 @@ exports.motDePasse = function(regex){
 }
 
 exports.client = function(client){
-    return this.telephone(client.telephone) || this.mail(client.mail) || this.motDePasse(client.motDePasse);
+    return this.telephone(client.telephone) && this.mail(client.mail) && this.motDePasse(client.motDePasse);
 }

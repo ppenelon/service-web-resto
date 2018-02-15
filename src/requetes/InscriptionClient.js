@@ -15,6 +15,7 @@ module.exports = function(parametres, callback) {
 
   if(!regex.client(client)){
     callback({resultat: -1});
+    return;
   }
 
   clientDAO.ajouterClient(client, function(resultat) {
