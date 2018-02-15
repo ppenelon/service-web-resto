@@ -2,12 +2,12 @@ const express = require('express');
 const app = express();
 
 const MongoClient = require('mongodb').MongoClient;
-const mongoUrl = 'mongodb://127.0.0.1:27017/resto'
+const mongoUrl = 'mongodb://127.0.0.1:27017'
 global.bdd;
 
-MongoClient.connect(mongoUrl, function(erreur, baseDeDonnee){
+MongoClient.connect(mongoUrl, function(erreur, client){
 	if(erreur)throw erreur;
-	global.bdd = baseDeDonnee;
+	global.bdd = client.db("resto");
 	app.listen(80);
 });
 

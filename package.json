@@ -8,6 +8,6 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.16.2",
-    "mongodb": "^2.2.34"
+    "mongodb": "^3.0.2"
   }
 }
