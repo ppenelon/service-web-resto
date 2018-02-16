@@ -6,7 +6,9 @@ global.bdd = mysql.createConnection({
 	host: 'localhost',
 	user: 'root',
 	password: '',
-	database: 'resto'
+	database: 'resto',
+	timezone: 'CET',
+	dateStrings: true
 });
 global.bdd.connect();
 
