@@ -1,3 +1,5 @@
+const md5 = require('md5');
+
 exports.ajouterClient = function (client, callback) {
     var condition = {
         $or: [
@@ -19,16 +21,31 @@ exports.ajouterClient = function (client, callback) {
     });
 };
 
-exports.recupererClient = function (parametres, callback) {
-    global.bdd.collection("client").findOne({ telephone: parametres.telephone }, function (erreur, resultat) {
-        try {
-            if (resultat.motDePasse != parametres.motDePasse) {
-                callback({ resultat: -1 });
-                return;
-            }
-            callback({ resultat: 1 });
-        } catch (e) {
-            callback({ resultat: -1 });
+exports.connecterClient = function (login, motDePasse, callback) {
+    var requete = {
+        $or: [
+            {mail: login},
+            {telephone: login}
+        ],
+        motDePasse: motDePasse
+    };
+    var update = {
+        $set: {
+            token: md5(new Date().getTime() + login)
+        }
+    }
+    global.bdd.collection('client').findAndModify(requete, {}, update, {}, function(erreur, resultat){
+        var document = resultat.value;
+        if(erreur || document === null){
+            callback({
+                resultat: 0
+            });
+        }
+        else{
+            callback({
+                resultat: 1,
+                token: document.token
+            });
         }
     });
 };
