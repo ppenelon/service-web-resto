@@ -1,4 +1,6 @@
-const token = require('../assistants/Token');
+const Client = require('../modeles/Client');
+
+const tokenAssistant = require('../assistants/Token');
 
 exports.ajouterClient = function (client, callback) {
     var condition = {
@@ -22,30 +24,20 @@ exports.ajouterClient = function (client, callback) {
 };
 
 exports.connecterClient = function (login, motDePasse, callback) {
-    var requete = {
-        $or: [
-            {mail: login},
-            {telephone: login}
-        ],
-        motDePasse: motDePasse
-    };
-    var update = {
-        $set: {
-            token: token.genererToken(login)
-        }
-    }
-    global.bdd.collection('client').findAndModify(requete, {}, update, {new: true}, function(erreur, resultat){
-        var document = resultat.value;
-        if(erreur || document === null){
-            callback({
-                resultat: 0
-            });
+    var tokenGenere = tokenAssistant.genererToken(login);
+
+    var requete = "UPDATE client SET token = ? WHERE (mail LIKE ? OR telephone LIKE ?) AND motDePasse LIKE ?";
+    var donnees = [tokenGenere, login, login, motDePasse];
+
+    global.bdd.query(requete, donnees, function(erreur, resultats, champs){
+        if(erreur || resultats.affectedRows === 0){
+            callback({resultat: 0});
         }
         else{
             callback({
                 resultat: 1,
-                token: document.token
-            });
+                token: tokenGenere
+            })
         }
     });
 };
