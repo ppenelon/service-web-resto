@@ -1,13 +1,13 @@
-exports.telephone = function(regex){
-    return regex.match(/^[0-9]{10}$/) != null;
+exports.telephone = function(champ){
+    return champ.match(/^[0-9]{10}$/) != null;
 }
 
-exports.mail = function(regex){
-    return regex.match(/^.+\@.+\..+$/) != null;
+exports.mail = function(champ){
+    return champ.match(/^.+\@.+\..+$/) != null;
 }
 
-exports.motDePasse = function(regex){
-    return regex.match(/^.{3,16}$/) != null;
+exports.motDePasse = function(champ){
+    return champ.match(/^.{3,16}$/) != null;
 }
 
 exports.client = function(client){
