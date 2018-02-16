@@ -13,3 +13,7 @@ exports.motDePasse = function(champ){
 exports.client = function(client){
     return this.telephone(client.telephone) && this.mail(client.mail) && this.motDePasse(client.motDePasse);
 }
+
+exports.token = function(champ){
+    return champ.match(/^[0-9a-f]{32}$/);
+}
