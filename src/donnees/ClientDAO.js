@@ -1,4 +1,4 @@
-const md5 = require('md5');
+const token = require('../assistants/Token');
 
 exports.ajouterClient = function (client, callback) {
     var condition = {
@@ -31,10 +31,10 @@ exports.connecterClient = function (login, motDePasse, callback) {
     };
     var update = {
         $set: {
-            token: md5(new Date().getTime() + login)
+            token: token.genererToken(login)
         }
     }
-    global.bdd.collection('client').findAndModify(requete, {}, update, {}, function(erreur, resultat){
+    global.bdd.collection('client').findAndModify(requete, {}, update, {new: true}, function(erreur, resultat){
         var document = resultat.value;
         if(erreur || document === null){
             callback({
