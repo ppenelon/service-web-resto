@@ -1,15 +1,14 @@
 const express = require('express');
 const app = express();
 
-const MongoClient = require('mongodb').MongoClient;
-const mongoUrl = 'mongodb://127.0.0.1:27017'
-global.bdd;
-
-MongoClient.connect(mongoUrl, function(erreur, client){
-	if(erreur)throw erreur;
-	global.bdd = client.db("resto");
-	app.listen(80);
+const mysql = require('mysql');
+global.bdd = mysql.createConnection({
+	host: 'localhost',
+	user: 'root',
+	password: '',
+	database: 'resto'
 });
+global.bdd.connect();
 
 app.get('/:requete/:parametres', function(requete, reponse){
 	try {
@@ -25,3 +24,4 @@ app.get('/:requete/:parametres', function(requete, reponse){
 	}
 });
 
+app.listen(80);
