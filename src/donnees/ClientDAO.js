@@ -34,7 +34,10 @@ exports.ajouterClient = function (client, callback) {
 exports.connecterClient = function (login, motDePasse, callback) {
     var tokenGenere = tokenAssistant.genererToken(login);
 
-    var requete = "UPDATE client SET token = ? WHERE (mail LIKE ? OR telephone LIKE ?) AND motDePasse LIKE ?";
+    var requete = `UPDATE client 
+                   SET token = ? 
+                   WHERE (mail LIKE ? OR telephone LIKE ?) 
+                   AND motDePasse LIKE ?`;
     var donnees = [tokenGenere, login, login, motDePasse];
 
     global.bdd.query(requete, donnees, function(erreur, resultats, champs){
