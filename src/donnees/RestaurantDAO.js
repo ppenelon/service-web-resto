@@ -1,3 +1,5 @@
+const tokenAssistant = require('../assistants/Token');
+
 exports.recupererDetailsRestaurant = function(idRestaurant, callback){
     var requete = `SELECT nom, adresse, telephone, mail, description FROM restaurant 
                    WHERE idRestaurant = ?`;
@@ -41,3 +43,20 @@ exports.modifierRestaurant = function(restaurant, token, callback){
         }
     });
 }
+
+exports.connecterRestaurant = function(login, motDePasse, token, callback){
+    var requete = `UPDATE restaurant
+                   SET token = ?
+                   WHERE (mail LIKE ? OR telephone LIKE ?)
+                   AND motDePasse LIKE ?`;
+    var donnees = [token, login, login, motDePasse];
+
+    global.bdd.query(requete, donnees, function(erreur, resultats, champs){
+        if(erreur || resultats.affectedRows === 0){
+            callback({resultat: 0});
+        }
+        else{
+            callback({resultat: 1});
+        }
+    })
+};

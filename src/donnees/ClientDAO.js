@@ -31,24 +31,19 @@ exports.ajouterClient = function (client, callback) {
     });
 };
 
-exports.connecterClient = function (login, motDePasse, callback) {
-    var tokenGenere = tokenAssistant.genererToken(login);
-
+exports.connecterClient = function (login, motDePasse, token, callback) {
     var requete = `UPDATE client 
                    SET token = ? 
                    WHERE (mail LIKE ? OR telephone LIKE ?) 
                    AND motDePasse LIKE ?`;
-    var donnees = [tokenGenere, login, login, motDePasse];
+    var donnees = [token, login, login, motDePasse];
 
     global.bdd.query(requete, donnees, function(erreur, resultats, champs){
         if(erreur || resultats.affectedRows === 0){
             callback({resultat: 0});
         }
         else{
-            callback({
-                resultat: 1,
-                token: tokenGenere
-            })
+            callback({resultat: 1});
         }
     });
 };
