@@ -40,3 +40,17 @@ exports.connecterClient = function (login, motDePasse, callback) {
         }
     });
 };
+
+exports.modifierClientAvecToken = function(client, callback){
+    var requete = `UPDATE client SET nom = ?, prenom = ?, motDePasse = ?
+                   WHERE idClient = (SELECT idClient WHERE token LIKE ?)`;
+    var donnees = [client.nom, client.prenom, client.motDePasse, client.token];
+
+    global.bdd.query(requete, donnees, function(erreur, resultats, champs){
+        if(erreur || resultats.affectedRows === 0){
+            callback({resultat: 0});
+        }else{
+            callback({resultat: 1});
+        }
+    });
+};

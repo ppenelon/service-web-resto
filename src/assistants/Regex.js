@@ -10,10 +10,10 @@ exports.motDePasse = function(champ){
     return champ.match(/^.{3,16}$/) != null;
 }
 
-exports.client = function(client){
-    return this.telephone(client.telephone) && this.mail(client.mail) && this.motDePasse(client.motDePasse);
-}
-
 exports.token = function(champ){
     return champ.match(/^[0-9a-f]{32}$/);
+}
+
+exports.client = function(client){
+    return this.telephone(client.telephone) && this.mail(client.mail) && this.motDePasse(client.motDePasse) && this.token(client.token);
 }
