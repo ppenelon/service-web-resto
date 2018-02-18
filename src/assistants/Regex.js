@@ -15,5 +15,5 @@ exports.token = function(champ){
 }
 
 exports.client = function(client){
-    return this.telephone(client.telephone) && this.mail(client.mail) && this.motDePasse(client.motDePasse) && this.token(client.token);
+    return this.telephone(client.telephone) && this.mail(client.mail) && this.motDePasse(client.motDePasse);
 }

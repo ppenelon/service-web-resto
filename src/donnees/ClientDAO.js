@@ -19,7 +19,9 @@ exports.ajouterClient = function (client, callback) {
             callback({resultat: -1});
         }else{
             var requete = "INSERT INTO client SET ?";
-            global.bdd.query(requete, client, function(erreur, resultats, champs){
+            var tokenGenere = tokenAssistant.genererToken(client.mail);
+            var donnees = [client.idClient, client.nom, client.prenom, client.telephone, client.mail, client.motDePasse, tokenGenere]
+            global.bdd.query(requete, donnees, function(erreur, resultats, champs){
                 if(erreur || resultats.affectedRows === 0)
                     callback({resultat: 0});
                 else
@@ -48,10 +50,10 @@ exports.connecterClient = function (login, motDePasse, callback) {
     });
 };
 
-exports.modifierClientAvecToken = function(client, callback){
+exports.modifierClientAvecToken = function(client, token, callback){
     var requete = `UPDATE client SET nom = ?, prenom = ?, motDePasse = ?
                    WHERE idClient = (SELECT idClient WHERE token LIKE ?)`;
-    var donnees = [client.nom, client.prenom, client.motDePasse, client.token];
+    var donnees = [client.nom, client.prenom, client.motDePasse, token];
 
     global.bdd.query(requete, donnees, function(erreur, resultats, champs){
         if(erreur || resultats.affectedRows === 0){
@@ -70,7 +72,6 @@ exports.creeClientAvecParametres = function(parametres){
         parametres.telephone, 
         parametres.mail, 
         parametres.motDePasse, 
-        parametres.idClient, 
-        parametres.token
+        parametres.idClient
     );
 };
