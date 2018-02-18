@@ -9,7 +9,7 @@ exports.ajouterClient = function (client, callback) {
     global.bdd.query(requete, donnees, function(erreur, resultats, champs){
         //Si il y a déjà un client avec les informations du client que l'on veut ajouter
         if(erreur || resultats.length !== 0){
-            callback({resultats: -1});
+            callback({resultat: -1});
         }else{
             requete = "INSERT INTO client SET ?";
             global.bdd.query(requete, client, function(erreur, resultats, champs){
