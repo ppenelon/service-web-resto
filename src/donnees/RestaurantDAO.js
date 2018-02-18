@@ -20,7 +20,7 @@ exports.recupererRestaurantProche = function(latitude, longitude, callback, rayo
         if(erreur || resultats.length === 0){
             callback({resultat: -1});
         }else{
-            callback({resultat: resultats[0]});
+            callback({resultat: resultats});
         }
     });
 };
