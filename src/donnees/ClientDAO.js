@@ -2,16 +2,23 @@ const Client = require('../modeles/Client');
 
 const tokenAssistant = require('../assistants/Token');
 
-exports.ajouterClient = function (client, callback) {
+//Regarde si un client existe deja dans la bdd
+exports.clientExiste = function(telephone, mail, callback){
     var requete = "SELECT idClient FROM client WHERE telephone=? OR mail=?";
-    var donnees = [client.telephone, client.mail];
+    var donnees = [telephone, mail];
 
     global.bdd.query(requete, donnees, function(erreur, resultats, champs){
-        //Si il y a déjà un client avec les informations du client que l'on veut ajouter
-        if(erreur || resultats.length !== 0){
+        callback(erreur || resultats.length !== 0);
+    });
+};
+
+//Ajout le client dans la bdd
+exports.ajouterClient = function (client, callback) {
+    this.clientExiste(client.telephone, client.mail, function(clientExiste){
+        if(clientExiste){
             callback({resultat: -1});
         }else{
-            requete = "INSERT INTO client SET ?";
+            var requete = "INSERT INTO client SET ?";
             global.bdd.query(requete, client, function(erreur, resultats, champs){
                 if(erreur || resultats.affectedRows === 0)
                     callback({resultat: 0});
@@ -53,4 +60,17 @@ exports.modifierClientAvecToken = function(client, callback){
             callback({resultat: 1});
         }
     });
+};
+
+//Retourne un nouveau client en fonction des parametres
+exports.creeClientAvecParametres = function(parametres){
+    return new Client(
+        parametres.nom, 
+        parametres.prenom, 
+        parametres.telephone, 
+        parametres.mail, 
+        parametres.motDePasse, 
+        parametres.idClient, 
+        parametres.token
+    );
 };
