@@ -45,3 +45,19 @@ exports.recupererReservationRestaurantAvecToken = function(tokenRestaurant, call
         }
     });
 }
+
+exports.ajouterReservation = function(date, heure, nombrePersonnes, idRestaurant, tokenClient, callback){
+    var requete = `INSERT INTO reservation
+                   VALUES ((SELECT idClient FROM client WHERE token LIKE ? LIMIT 1), ?, ?, ?)`;
+
+    var donnees = [tokenClient, idRestaurant, (date + ' ' + heure), nombrePersonnes];
+
+    global.bdd.query(requete, donnees, function(erreur, resultats, champs){
+        if(erreur || resultats.affectedRows === 0){
+            callback({resultat: 0});
+        }
+        else{
+            callback({resultat: 1});
+        }
+    });
+}
