@@ -17,3 +17,7 @@ exports.client = function(client){
 exports.token = function(champ){
     return champ.match(/^[0-9a-f]{32}$/);
 }
+
+exports.restaurant = function(restaurant){
+    return this.telephone(restaurant.telephone) && this.mail(restaurant.mail) && this.motDePasse(restaurant.motDePasse);
+}
