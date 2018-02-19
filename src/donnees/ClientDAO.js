@@ -16,7 +16,7 @@ exports.clientExiste = function(telephone, mail, callback){
 exports.ajouterClient = function (client, callback) {
     this.clientExiste(client.telephone, client.mail, function(clientExiste){
         if(clientExiste){
-            callback({resultat: -1});
+            callback({resultat: 0});
         }else{
             var requete = "INSERT INTO client SET ?";
             var tokenGenere = tokenAssistant.genererToken(client.mail);
@@ -25,7 +25,10 @@ exports.ajouterClient = function (client, callback) {
                 if(erreur || resultats.affectedRows === 0)
                     callback({resultat: 0});
                 else
-                    callback({resultat: 1});
+                    callback({
+                        resultat: 1,
+                        token: tokenGenere
+                    });
             });
         }
     });

@@ -7,9 +7,12 @@ exports.recupererDetailsRestaurant = function(idRestaurant, callback){
 
     global.bdd.query(requete, donnees, function(erreur, resultats, champs){
         if(erreur || resultats.length === 0){
-            callback({resultat: -1});
+            callback({resultat: 0});
         }else{
-            callback({resultat: resultats[0]});
+            callback({
+                resultat: 1,
+                details: resultats[0]
+            });
         }
     });
 };
@@ -20,9 +23,12 @@ exports.recupererRestaurantsProches = function(latitude, longitude, callback, ra
     var donnees = [latitude, latitude, longitude, longitude];
     global.bdd.query(requete, donnees, function(erreur, resultats, champs){
         if(erreur || resultats.length === 0){
-            callback({resultat: -1});
+            callback({resultat: 0});
         }else{
-            callback({resultat: resultats});
+            callback({
+                resultat: 1,
+                restaurants: resultats
+            });
         }
     });
 };
