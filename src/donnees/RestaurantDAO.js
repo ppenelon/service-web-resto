@@ -79,7 +79,30 @@ exports.creeRestaurantAvecParametres = function(parametres){
         parametres.mail,
         parametres.motDePasse
     );
-};exports.restaurantExiste = function(telephone, mail, callback){
+};
+
+exports.ajouterRestaurant = function(restaurant){
+    this.restaurantExiste(restaurant.telephone, restaurant.mail, function(restaurantExiste){
+        if(restaurantExiste){
+            callback({resultat: 0});
+        }else{
+            var requete = "INSERT INTO restaurant SET ?";
+            var tokenGenere = tokenAssistant.genererToken(restaurant.mail);
+            var donnees = [restaurant.idRestaurant, restaurant.nom, restaurant.description, restaurant.adresse, restaurant.latitude, restaurant.longitude, restaurant.telephone, restaurant.mail, restaurant.motDePasse, tokenGenere]
+            global.bdd.query(requete, donnees, function(erreur, resultats, champs){
+                if(erreur || resultats.affectedRows === 0)
+                    callback({resultat: 0});
+                else
+                    callback({
+                        resultat: 1,
+                        token: tokenGenere
+                    });
+            });
+        }
+    });
+}
+
+exports.restaurantExiste = function(telephone, mail, callback){
     var requete = "SELECT idClient FROM restaurant WHERE telephone=? OR mail=?";
     var donnees = [telephone, mail];
 
