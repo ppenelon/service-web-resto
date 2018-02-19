@@ -66,3 +66,17 @@ exports.connecterRestaurant = function(login, motDePasse, token, callback){
         }
     })
 };
+
+exports.creeRestaurantAvecParametres = function(parametres){
+    return new Restaurant(
+        parametres.idRestaurant, 
+        parametres.nom, 
+        parametres.description, 
+        parametres.adresse, 
+        parametres.latitude, 
+        parametres.longitude,
+        parametres.telephone,
+        parametres.mail,
+        parametres.motDePasse
+    );
+};
