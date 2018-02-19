@@ -79,4 +79,12 @@ exports.creeRestaurantAvecParametres = function(parametres){
         parametres.mail,
         parametres.motDePasse
     );
+};exports.restaurantExiste = function(telephone, mail, callback){
+    var requete = "SELECT idClient FROM restaurant WHERE telephone=? OR mail=?";
+    var donnees = [telephone, mail];
+
+    global.bdd.query(requete, donnees, function(erreur, resultats, champs){
+        callback(erreur || resultats.length !== 0);
+    });
 };
+
