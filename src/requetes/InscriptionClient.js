@@ -20,7 +20,7 @@ module.exports = function(parametres, callback) {
   //Verification de la validite des parametres envoyes
   if (
     parametres.nom.length > 150 ||
-    parametres.prenom > 150 ||
+    parametres.prenom.length > 150 ||
     !regex.telephone(parametres.telephone) ||
     !regex.mail(parametres.mail) ||
     !regex.motDePasse(parametres.motDePasse)
