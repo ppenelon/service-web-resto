@@ -51,7 +51,7 @@ exports.connecterClient = function (login, motDePasse, token, callback) {
     });
 };
 
-exports.modifierClientAvecToken = function(client, token, callback){
+exports.modifierClient = function(client, token, callback){
     var requete = `UPDATE client SET nom = ?, prenom = ?, motDePasse = ?
                    WHERE idClient = (SELECT idClient WHERE token LIKE ?)`;
     var donnees = [client.nom, client.prenom, client.motDePasse, token];

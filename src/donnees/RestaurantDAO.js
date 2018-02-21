@@ -17,7 +17,7 @@ exports.recupererDetailsRestaurant = function(idRestaurant, callback){
     });
 };
 
-exports.recupererRestaurantsProches = function(latitude, longitude, callback, rayon = 10){
+exports.recupererRestaurantsProches = function(latitude, longitude, callback, rayon){
     var requete = `SELECT idRestaurant, nom, description, longitude, latitude 
                    FROM restaurant 
                    WHERE latitude - ${rayon} < ? 

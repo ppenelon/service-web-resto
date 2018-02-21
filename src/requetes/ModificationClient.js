@@ -16,7 +16,7 @@ module.exports = function(parametres, callback){
     if(!regex.motDePasse(parametres.motDePasse) || !regex.token(parametres.token))
         throw new Error('Mauvais format des parametres');
 
-    clientDAO.modifierClientAvecToken(client, parametres.token, function(resultat){
+    clientDAO.modifierClient(client, parametres.token, function(resultat){
         callback(resultat);
     });
 }
