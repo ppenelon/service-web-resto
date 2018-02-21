@@ -52,9 +52,9 @@ exports.connecterClient = function (login, motDePasse, token, callback) {
 };
 
 exports.modifierClient = function(client, token, callback){
-    var requete = `UPDATE client SET nom = ?, prenom = ?, motDePasse = ?
+    var requete = `UPDATE client SET nom = ?, prenom = ?, motDePasse = ?, mail = ?, telephone = ?
                    WHERE idClient = (SELECT idClient WHERE token LIKE ?)`;
-    var donnees = [client.nom, client.prenom, client.motDePasse, token];
+    var donnees = [client.nom, client.prenom, client.motDePasse, client.mail, client.telephone, token];
 
     global.bdd.query(requete, donnees, function(erreur, resultats, champs){
         if(erreur || resultats.affectedRows === 0){
