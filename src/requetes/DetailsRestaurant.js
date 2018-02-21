@@ -6,6 +6,10 @@ module.exports = function(parametres, callback){
 	if(!parametres.hasOwnProperty('idRestaurant'))
         throw new Error('Parametres manquants');
 
+    //Verification de la validite des parametres envoyes
+    if(isNaN(parametres.idRestaurant))
+        throw new Error('');
+
     restaurantDAO.recupererDetailsRestaurant(parametres.idRestaurant, function(resultat){
         callback(resultat);
     });
