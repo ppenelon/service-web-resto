@@ -18,9 +18,9 @@ exports.ajouterClient = function (client, callback) {
         if(clientExiste){
             callback({resultat: 0});
         }else{
-            var requete = "INSERT INTO client SET ?";
+            var requete = "INSERT INTO client SET nom = ?, prenom = ?, telephone = ?, mail = ?, motDePasse = ?, token = ?";
             var tokenGenere = tokenAssistant.genererToken(client.mail);
-            var donnees = [client.idClient, client.nom, client.prenom, client.telephone, client.mail, client.motDePasse, tokenGenere]
+            var donnees = [client.nom, client.prenom, client.telephone, client.mail, client.motDePasse, tokenGenere]
             global.bdd.query(requete, donnees, function(erreur, resultats, champs){
                 if(erreur || resultats.affectedRows === 0)
                     callback({resultat: 0});
