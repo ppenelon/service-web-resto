@@ -7,26 +7,22 @@ const tokenAssistant = require("../assistants/Token");
 
 module.exports = function(parametres, callback) {
   //Verification que tous les parametres sont la
-  if (
-    !parametres.hasOwnProperty("nom") ||
+  if (!parametres.hasOwnProperty("nom") ||
     !parametres.hasOwnProperty("prenom") ||
     !parametres.hasOwnProperty("telephone") ||
     !parametres.hasOwnProperty("mail") ||
     !parametres.hasOwnProperty("motDePasse") ||
-    !parametres.hasOwnProperty("token")
-  ) {
+    !parametres.hasOwnProperty("token")) {
     throw new Error("Parametres manquants");
   }
 
   //Verification de la validite des parametres envoyes
-  if (
-    parametres.nom.length > 150 ||
+  if (parametres.nom.length > 150 ||
     parametres.prenom.length > 150 ||
     !regex.telephone(parametres.telephone) ||
     !regex.mail(parametres.mail) ||
     !regex.motDePasse(parametres.motDePasse) ||
-    !regex.token(parametres.token)
-  ) {
+    !regex.token(parametres.token)) {
     throw new Error("Mauvais format des parametres");
   }
 
