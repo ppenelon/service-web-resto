@@ -1,5 +1,7 @@
 const tokenAssistant = require('../assistants/Token');
 
+const Restaurant = require('../modeles/Restaurant');
+
 exports.recupererDetailsRestaurant = function(idRestaurant, callback){
     var requete = `SELECT nom, adresse, telephone, mail, description FROM restaurant 
                    WHERE idRestaurant = ?`;
@@ -94,14 +96,14 @@ exports.creeRestaurantAvecParametres = function(parametres){
     );
 };
 
-exports.ajouterRestaurant = function(restaurant){
+exports.ajouterRestaurant = function(restaurant, callback){
     this.restaurantExiste(restaurant.telephone, restaurant.mail, function(restaurantExiste){
         if(restaurantExiste){
             callback({resultat: 0});
         }else{
-            var requete = "INSERT INTO restaurant SET ?";
+            var requete = `INSERT INTO restaurant SET nom = ?, adresse = ?, latitude = ?, longitude = ?, telephone = ?, mail = ?, motDePasse = ?, description = ?, token = ?`;
             var tokenGenere = tokenAssistant.genererToken(restaurant.mail);
-            var donnees = [restaurant.idRestaurant, restaurant.nom, restaurant.description, restaurant.adresse, restaurant.latitude, restaurant.longitude, restaurant.telephone, restaurant.mail, restaurant.motDePasse, tokenGenere]
+            var donnees = [restaurant.nom, restaurant.adresse, restaurant.latitude, restaurant.longitude, restaurant.telephone, restaurant.mail, restaurant.motDePasse, restaurant.description, tokenGenere];
             global.bdd.query(requete, donnees, function(erreur, resultats, champs){
                 if(erreur || resultats.affectedRows === 0)
                     callback({resultat: 0});
@@ -116,7 +118,7 @@ exports.ajouterRestaurant = function(restaurant){
 }
 
 exports.restaurantExiste = function(telephone, mail, callback){
-    var requete = "SELECT idClient FROM restaurant WHERE telephone=? OR mail=?";
+    var requete = "SELECT idRestaurant FROM restaurant WHERE telephone=? OR mail=?";
     var donnees = [telephone, mail];
 
     global.bdd.query(requete, donnees, function(erreur, resultats, champs){
