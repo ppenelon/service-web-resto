@@ -17,24 +17,32 @@ module.exports = function(parametres, callback){
         !regex.telephone(parametres.telephone) || !regex.mail(parametres.mail) || !regex.motDePasse(parametres.motDePasse))
         throw new Error('Mauvais format des parametres');
 
-    //On trouve la longitude et la latitude de l'adresse
-    convertirAdresse.convertir(parametres.adresse, function(coordonnees){
-        //On cree le nouveau restaurant modifie
-        var restaurantModifie = new Restaurant(
-            null,
-            parametres.nom,
-            parametres.description,
-            parametres.adresse,
-            coordonnees.latitude,
-            coordonnees.longitude,
-            parametres.telephone,
-            parametres.mail,
-            parametres.motDePasse
-        );
+    //On regarde si le numéro et le mail n'est pas deja utilise
+    restaurantDAO.restaurantExisteExclureToken(parametres.telephone, parametres.mail, parametres.token, function(existe){
+        if(!existe){
+            //On trouve la longitude et la latitude de l'adresse
+            convertirAdresse.convertir(parametres.adresse, function(coordonnees){
+                //On cree le nouveau restaurant modifie
+                var restaurantModifie = new Restaurant(
+                    null,
+                    parametres.nom,
+                    parametres.description,
+                    parametres.adresse,
+                    coordonnees.latitude,
+                    coordonnees.longitude,
+                    parametres.telephone,
+                    parametres.mail,
+                    parametres.motDePasse
+                );
 
-        //On tente de modifier le restaurant
-        restaurantDAO.modifierRestaurant(restaurantModifie, parametres.token, function(resultat){
-            callback(resultat);
-        })
-    })
+                //On tente de modifier le restaurant
+                restaurantDAO.modifierRestaurant(restaurantModifie, parametres.token, function(resultat){
+                    callback(resultat);
+                });
+            });
+        }
+        else{
+            callback({resultat: 0});
+        }
+    });
 }

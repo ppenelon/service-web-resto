@@ -142,3 +142,15 @@ exports.restaurantExiste = function(telephone, mail, callback){
         callback(erreur || resultats.length !== 0);
     });
 };
+
+exports.restaurantExisteExclureToken = function(telephone, mail, token, callback){
+    var requete = `SELECT idRestaurant 
+                   FROM restaurant 
+                   WHERE (telephone=? OR mail=?)
+                   AND token <> ?`;
+    var donnees = [telephone, mail, token];
+
+    global.bdd.query(requete, donnees, function(erreur, resultats, champs){
+        callback(erreur || resultats.length !== 0);
+    });
+};
