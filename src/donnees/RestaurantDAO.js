@@ -18,14 +18,21 @@ exports.recupererDetailsRestaurant = function(idRestaurant, callback){
 };
 
 exports.recupererRestaurantsProches = function(latitude, longitude, callback, rayon){
-    var requete = `SELECT idRestaurant, nom, description, longitude, latitude 
-                   FROM restaurant 
-                   WHERE latitude - ${rayon} < ? 
-                   AND latitude + ${rayon} > ? 
-                   AND longitude - ${rayon} < ? 
-                   AND longitude + ${rayon} > ?`;
-
-    var donnees = [latitude, latitude, longitude, longitude];
+    var requete = `SELECT idRestaurant, nom, description, longitude, latitude,
+                          6371e+3 AS rayonTerre,
+                          ? AS latClient,
+                          ? AS lonClient,
+                          RADIANS((SELECT latClient)) AS radLat1,
+                          RADIANS((SELECT latitude)) AS radLat2,
+                          RADIANS((SELECT latitude) - (SELECT latClient)) AS deltaLat,
+                          RADIANS((SELECT longitude) - (SELECT lonClient)) AS deltaLon,
+                          (SIN((SELECT deltaLat) / 2) * SIN((SELECT deltaLat) / 2)) + (COS((SELECT radLat1)) * COS((SELECT radLat2)) * SIN((SELECT deltaLon) / 2) * SIN((SELECT deltaLon) / 2)) AS a,
+                          2 * ATAN2(SQRT((SELECT a)), SQRT(1 - (SELECT a))) AS c,
+                          (SELECT rayonTerre) * (SELECT c) / 1000 AS d
+                   FROM restaurant
+                   HAVING d <= ?`;
+    
+    var donnees = [latitude, longitude, rayon]; //latitude, longitude, kilometres max
 
     global.bdd.query(requete, donnees, function(erreur, resultats, champs){
         if(erreur || resultats.length === 0){
@@ -116,4 +123,3 @@ exports.restaurantExiste = function(telephone, mail, callback){
         callback(erreur || resultats.length !== 0);
     });
 };
-
