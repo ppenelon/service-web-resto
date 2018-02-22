@@ -82,6 +82,23 @@ exports.connecterRestaurant = function(login, motDePasse, token, callback){
     })
 };
 
+exports.deconnecterRestaurant = function(token, callback){
+    var requete = `UPDATE restaurant
+                   SET token = ''
+                   WHERE token = ?`;
+
+    var donnees = [token];
+
+    global.bdd.query(requete, donnees, function(erreur, resultats, champs){
+        if(erreur || resultats.affectedRows === 0){
+            callback({resultat: 0});
+        }
+        else{
+            callback({resultat: 1});
+        }
+    });
+}
+
 exports.creeRestaurantAvecParametres = function(parametres){
     return new Restaurant(
         parametres.idRestaurant, 

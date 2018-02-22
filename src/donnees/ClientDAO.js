@@ -51,6 +51,23 @@ exports.connecterClient = function (login, motDePasse, token, callback) {
     });
 };
 
+exports.deconnecterClient = function(token, callback){
+    var requete = `UPDATE client
+                   SET token = ''
+                   WHERE token = ?`;
+
+    var donnees = [token];
+
+    global.bdd.query(requete, donnees, function(erreur, resultats, champs){
+        if(erreur || resultats.affectedRows === 0){
+            callback({resultat: 0});
+        }
+        else{
+            callback({resultat: 1});
+        }
+    });
+}
+
 exports.modifierClient = function(client, token, callback){
     var requete = `UPDATE client SET nom = ?, prenom = ?, motDePasse = ?, mail = ?, telephone = ?
                    WHERE idClient = (SELECT idClient WHERE token LIKE ?)`;
