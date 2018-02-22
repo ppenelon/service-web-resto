@@ -22,10 +22,10 @@ exports.recupererDetailsRestaurant = function(idRestaurant, callback){
 exports.recupererRestaurantsProches = function(latitude, longitude, callback, rayon){
     var requete = `SELECT idRestaurant, nom, description, longitude, latitude 
                    FROM restaurant 
-                   WHERE latitude - ${rayon} < ? 
-                   AND latitude + ${rayon} > ? 
-                   AND longitude - ${rayon} < ? 
-                   AND longitude + ${rayon} > ?`;
+                   WHERE latitude - ${rayon/100} < ? 
+                   AND latitude + ${rayon/100} > ? 
+                   AND longitude - ${rayon/110} < ? 
+                   AND longitude + ${rayon/110} > ?`;
 
     var donnees = [latitude, latitude, longitude, longitude];
 
