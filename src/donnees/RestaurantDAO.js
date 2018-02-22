@@ -109,7 +109,7 @@ exports.ajouterRestaurant = function(restaurant){
 }
 
 exports.restaurantExiste = function(telephone, mail, callback){
-    var requete = "SELECT idClient FROM restaurant WHERE telephone=? OR mail=?";
+    var requete = "SELECT idRestaurant FROM restaurant WHERE telephone=? OR mail=?";
     var donnees = [telephone, mail];
 
     global.bdd.query(requete, donnees, function(erreur, resultats, champs){
