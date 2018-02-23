@@ -26,9 +26,16 @@ module.exports = function(parametres, callback) {
     throw new Error("Mauvais format des parametres");
   }
 
-  var clientModifie = clientDAO.creeClientAvecParametres(parametres);
+  clientDAO.clientExisteExclureToken(parametres.telephone, parametres.mail, parametres.token, function(existe){
+    if(!existe){
+      var clientModifie = clientDAO.creeClientAvecParametres(parametres);
 
-  clientDAO.modifierClient(clientModifie, parametres.token, function(resultat) {
-    callback(resultat);
+      clientDAO.modifierClient(clientModifie, parametres.token, function(resultat){
+        callback(resultat);
+      });
+    }
+    else{
+      callback({resultat: 0});
+    }
   });
 };
