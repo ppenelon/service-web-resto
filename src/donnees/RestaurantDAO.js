@@ -37,7 +37,7 @@ exports.recupererRestaurantsProches = function(latitude, longitude, callback, ra
     var donnees = [latitude, longitude, rayon]; //latitude, longitude, kilometres max
 
     global.bdd.query(requete, donnees, function(erreur, resultats, champs){
-        if(erreur || resultats.length === 0){
+        if(erreur){
             callback({resultat: 0});
         }else{
             callback({
