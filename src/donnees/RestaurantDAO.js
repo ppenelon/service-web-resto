@@ -77,7 +77,22 @@ exports.connecterRestaurant = function(login, motDePasse, token, callback){
             callback({resultat: 0});
         }
         else{
-            callback({resultat: 1});
+            //On récupère le nom du restaurant
+            var requete2 = `SELECT nom
+                            FROM restaurant
+                            WHERE token LIKE ?`;
+            var donnees2 = [token];
+            global.bdd.query(requete2, donnees2, function(erreur2, resultats2, champs2){
+                if(erreur || resultats2.length == 0){
+                    callback({resultat: 0});
+                }
+                else{
+                    callback({
+                        resultat: 1,
+                        nom: resultats2[0].nom
+                    });
+                }
+            })
         }
     })
 };
