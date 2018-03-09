@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  127.0.0.1
--- Généré le :  Ven 09 Mars 2018 à 19:36
+-- Généré le :  Ven 09 Mars 2018 à 21:07
 -- Version du serveur :  5.7.14
 -- Version de PHP :  5.6.25
 
@@ -35,6 +35,18 @@ CREATE TABLE `client` (
   `motDePasse` varchar(16) NOT NULL,
   `codeFidelite` varchar(7) NOT NULL,
   `token` varchar(32) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `fidelite`
+--
+
+CREATE TABLE `fidelite` (
+  `idClient` int(11) NOT NULL,
+  `idRestaurant` int(11) NOT NULL,
+  `points` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -80,6 +92,13 @@ ALTER TABLE `client`
   ADD PRIMARY KEY (`idClient`);
 
 --
+-- Index pour la table `fidelite`
+--
+ALTER TABLE `fidelite`
+  ADD PRIMARY KEY (`idClient`,`idRestaurant`),
+  ADD KEY `fk_fidelite_idRestaurant_restaurant_idRestaurant` (`idRestaurant`);
+
+--
 -- Index pour la table `reservation`
 --
 ALTER TABLE `reservation`
@@ -109,6 +128,13 @@ ALTER TABLE `restaurant`
 --
 -- Contraintes pour les tables exportées
 --
+
+--
+-- Contraintes pour la table `fidelite`
+--
+ALTER TABLE `fidelite`
+  ADD CONSTRAINT `fk_fidelite_idClient_client_idClient` FOREIGN KEY (`idClient`) REFERENCES `client` (`idClient`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_fidelite_idRestaurant_restaurant_idRestaurant` FOREIGN KEY (`idRestaurant`) REFERENCES `restaurant` (`idRestaurant`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `reservation`

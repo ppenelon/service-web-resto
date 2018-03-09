@@ -29,3 +29,7 @@ exports.date = function(champ){
 exports.heure = function(champ){
     return champ.match(/^[0-9]{2}:[0-9]{2}$/) != null;
 }
+
+exports.codeFidelite = function(champ){
+    return champ.match(/^([A-Z][0-9]){3}[A-Z]$/) != null;
+}

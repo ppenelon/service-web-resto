@@ -1,7 +1,7 @@
-var clientDAO = require('../donnees/ClientDAO');
+const clientDAO = require('../donnees/ClientDAO');
 
-var regex = require('../assistants/Regex');
-var generateurCode = require('../assistants/GenerateurCode');
+const regex = require('../assistants/Regex');
+const generateurCode = require('../assistants/GenerateurCode');
 
 module.exports = function(parametres, callback){
     //Verification que tous les parametres sont la
