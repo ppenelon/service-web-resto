@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  127.0.0.1
--- Généré le :  Ven 16 Février 2018 à 21:49
+-- Généré le :  Ven 09 Mars 2018 à 19:36
 -- Version du serveur :  5.7.14
 -- Version de PHP :  5.6.25
 
@@ -33,6 +33,7 @@ CREATE TABLE `client` (
   `telephone` varchar(15) NOT NULL,
   `mail` varchar(200) NOT NULL,
   `motDePasse` varchar(16) NOT NULL,
+  `codeFidelite` varchar(7) NOT NULL,
   `token` varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

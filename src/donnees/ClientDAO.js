@@ -2,6 +2,26 @@ const Client = require('../modeles/Client');
 
 const tokenAssistant = require('../assistants/Token');
 
+//Retourne l'ID d'un client en fonction de son token
+exports.recupererIdClientAvecToken = function (token, callback){
+    var requete = `SELECT idClient
+                   FROM client
+                   WHERE token LIKE ?`;
+    var donnees = [token];
+
+    global.bdd.query(requete, donnees, function(erreur, resultats, champs){
+        if(erreur || resultats.length === 0){
+            callback({resultat: 0});
+        }
+        else{
+            callback({
+                resultat: 1,
+                idClient: resultats[0].idClient
+            });
+        }
+    });
+}
+
 //Regarde si un client existe deja dans la bdd
 exports.clientExiste = function(telephone, mail, callback){
     var requete = "SELECT idClient FROM client WHERE telephone=? OR mail=?";
@@ -50,6 +70,23 @@ exports.connecterClient = function (login, motDePasse, token, callback) {
         }
     });
 };
+
+//Fonction qui définit le code de fidélité d'un client en fonction de son id
+exports.definirCodeFidelite = function(codeFidelite, idClient, callback){
+    var requete = `UPDATE client
+                   SET codeFidelite = ?
+                   WHERE idClient = ?`;
+    var donnees = [codeFidelite, idClient];
+
+    global.bdd.query(requete, donnees, function(erreur, resultats, champs){
+        if(erreur || resultats.affectedRows === 0){
+            callback({resultat: 0});
+        }
+        else{
+            callback({resultat: 1});
+        }
+    });
+}
 
 exports.deconnecterClient = function(token, callback){
     var requete = `UPDATE client
