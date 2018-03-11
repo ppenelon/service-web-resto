@@ -78,7 +78,7 @@ exports.connecterRestaurant = function(login, motDePasse, token, callback){
         }
         else{
             //On récupère le nom du restaurant
-            var requete2 = `SELECT nom
+            var requete2 = `SELECT nom, mail
                             FROM restaurant
                             WHERE token LIKE ?`;
             var donnees2 = [token];
@@ -89,7 +89,8 @@ exports.connecterRestaurant = function(login, motDePasse, token, callback){
                 else{
                     callback({
                         resultat: 1,
-                        nom: resultats2[0].nom
+                        nom: resultats2[0].nom,
+                        mail: resultats2[0].mail
                     });
                 }
             })

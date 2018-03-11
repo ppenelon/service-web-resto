@@ -67,7 +67,7 @@ exports.connecterClient = function (login, motDePasse, token, callback) {
         }
         else{
             //On récupère le nom du client
-            var requete2 = `SELECT nom, prenom
+            var requete2 = `SELECT nom, prenom, mail
                             FROM client
                             WHERE token LIKE ?`;
             var donnees2 = [token];
@@ -78,7 +78,8 @@ exports.connecterClient = function (login, motDePasse, token, callback) {
                 else{
                     callback({
                         resultat: 1,
-                        nom: resultats2[0].nom + " " + resultats2[0].prenom
+                        nom: resultats2[0].nom + " " + resultats2[0].prenom,
+                        mail: resultats2[0].mail
                     });
                 }
             });

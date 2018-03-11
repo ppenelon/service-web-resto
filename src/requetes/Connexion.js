@@ -23,6 +23,7 @@ module.exports = function(parametres, callback) {
 				resultat: 1,
 				type: 'client',
 				nom: resultat.nom,
+				mail: resultat.mail,
 				token: tokenGenere
 			});
 		}
@@ -34,6 +35,7 @@ module.exports = function(parametres, callback) {
 						resultat: 1,
 						type: 'restaurant',
 						nom: resultat.nom,
+						mail: resultat.mail,
 						token: tokenGenere
 					});
 				}
