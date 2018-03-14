@@ -31,5 +31,5 @@ exports.heure = function(champ){
 }
 
 exports.codeFidelite = function(champ){
-    return champ.match(/^([A-Z][0-9]){3}[A-Z]$/) != null;
+    return this.token(champ);
 }

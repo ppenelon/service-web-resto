@@ -1,3 +1,5 @@
+const md5 = require('md5');
+
 //Alphabet disponible pour convertir l'ID du client
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -27,6 +29,6 @@ exports.genererCodeClient = function(idClient){
     //On calcule X (X-O-O-O)
     lettre = alphabet.charAt(Math.floor(idClient / (alphabet.length * alphabet.length * alphabet.length)) % alphabet.length);
     chaineFinale = lettre + chaineFinale;
-    //On retourne le résultat
-    return chaineFinale;
+    //On retourne le résultat cryptée
+    return md5(new Date().getTime() + chaineFinale);
 }
