@@ -22,16 +22,6 @@ exports.recupererIdClientAvecToken = function (token, callback){
     });
 }
 
-//Regarde si un client existe deja dans la bdd
-exports.clientExiste = function(telephone, mail, callback){
-    var requete = "SELECT idClient FROM client WHERE telephone=? OR mail=?";
-    var donnees = [telephone, mail];
-
-    global.bdd.query(requete, donnees, function(erreur, resultats, champs){
-        callback(erreur || resultats.length !== 0);
-    });
-};
-
 //Ajout le client dans la bdd
 exports.ajouterClient = function (client, callback) {
     this.clientExiste(client.telephone, client.mail, function(clientExiste){
@@ -147,12 +137,32 @@ exports.creeClientAvecParametres = function(parametres){
     );
 };
 
+//Regarde si un client existe deja dans la bdd
+exports.clientExiste = function(telephone, mail, callback){
+    var requete = `SELECT idClient
+                   FROM client
+                   WHERE (telephone LIKE ? OR mail LIKE ?)
+                   UNION
+                   SELECT idRestaurant
+                   FROM restaurant
+                   WHERE (telephone LIKE ? OR mail LIKE ?)`;
+    var donnees = [telephone, mail, telephone, mail];
+
+    global.bdd.query(requete, donnees, function(erreur, resultats, champs){
+        callback(erreur || resultats.length !== 0);
+    });
+};
+
 exports.clientExisteExclureToken = function(telephone, mail, token, callback){
     var requete = `SELECT idClient 
                    FROM client 
-                   WHERE (telephone= ? OR mail= ?)
-                   AND token <> ?`;
-    var donnees = [telephone, mail, token];
+                   WHERE (telephone LIKE ? OR mail LIKE ?)
+                   AND token <> ?
+                   UNION
+                   SELECT idRestaurant
+                   FROM restaurant
+                   WHERE (telephone LIKE ? OR mail LIKE ?)`;
+    var donnees = [telephone, mail, token, telephone, mail];
 
     global.bdd.query(requete, donnees, function(erreur, resultats, champs){
         callback(erreur || resultats.length !== 0);
