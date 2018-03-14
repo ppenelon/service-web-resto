@@ -113,9 +113,24 @@ exports.deconnecterClient = function(token, callback){
 }
 
 exports.modifierClient = function(client, token, callback){
-    var requete = `UPDATE client SET nom = ?, prenom = ?, motDePasse = ?, mail = ?, telephone = ?
-                   WHERE idClient = (SELECT idClient WHERE token LIKE ?)`;
-    var donnees = [client.nom, client.prenom, client.motDePasse, client.mail, client.telephone, token];
+    var requete;
+    var donnees;
+    if(client.motDePasse != ""){ //On change le mot de passe
+        var requete = `UPDATE client
+                       SET nom = ?, prenom = ?, motDePasse = ?, mail = ?, telephone = ?
+                       WHERE idClient = (SELECT idClient 
+                                         WHERE token 
+                                         LIKE ?)`;
+        var donnees = [client.nom, client.prenom, client.motDePasse, client.mail, client.telephone, token];
+    }
+    else{ //On ne change pas le mot de passe
+        var requete = `UPDATE client
+                       SET nom = ?, prenom = ?, mail = ?, telephone = ?
+                       WHERE idClient = (SELECT idClient
+                                         WHERE token
+                                         LIKE ?)`;
+        var donnees = [client.nom, client.prenom, client.mail, client.telephone, token];
+    }    
 
     global.bdd.query(requete, donnees, function(erreur, resultats, champs){
         if(erreur || resultats.affectedRows === 0){
