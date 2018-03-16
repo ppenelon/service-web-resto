@@ -2,6 +2,26 @@ const tokenAssistant = require('../assistants/Token');
 
 const Restaurant = require('../modeles/Restaurant');
 
+//Retourne les informations d'un restaurant en fonction d'un token
+exports.recupererRestaurantAvecToken = function(token, callback){
+    var requete = `SELECT nom, adresse, telephone, mail, description
+                   FROM restaurant
+                   WHERE token LIKE ?`;
+    var donnees = [token];
+
+    global.bdd.query(requete, donnees, function(erreur, resultats, champs){
+        if(erreur || resultats.length === 0){
+            callback({resultat: 0});
+        }
+        else{
+            callback({
+                resultat: 1,
+                restaurant: resultats[0]
+            });
+        }
+    });
+}
+
 exports.recupererDetailsRestaurant = function(idRestaurant, callback){
     var requete = `SELECT nom, adresse, telephone, mail, description FROM restaurant 
                    WHERE idRestaurant = ?`;
