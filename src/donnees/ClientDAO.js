@@ -2,6 +2,26 @@ const Client = require('../modeles/Client');
 
 const tokenAssistant = require('../assistants/Token');
 
+//Retourne les informations d'un client en fonction d'un token
+exports.recupererClientAvecToken = function(token, callback){
+    var requete = `SELECT nom, prenom, telephone, mail
+                   FROM client
+                   WHERE token LIKE ?`;
+    var donnees = [token];
+
+    global.bdd.query(requete, donnees, function(erreur, resultats, champs){
+        if(erreur || resultats.length === 0){
+            callback({resultat: 0});
+        }
+        else{
+            callback({
+                resultat: 1,
+                client: resultats[0]
+            });
+        }
+    });
+}
+
 //Retourne l'ID d'un client en fonction de son token
 exports.recupererIdClientAvecToken = function (token, callback){
     var requete = `SELECT idClient
