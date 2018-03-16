@@ -49,11 +49,21 @@ exports.recupererRestaurantsProches = function(latitude, longitude, callback, ra
 };
 
 exports.modifierRestaurant = function(restaurant, token, callback){
-    var requete = `UPDATE restaurant
-                   SET nom = ?, adresse = ?, longitude = ?, latitude = ?, telephone = ?, mail = ?, motDePasse = ?, description = ?
-                   WHERE token LIKE ?`;
+    var requete;
+    var donnees;
+    if(restaurant.motDePasse != ""){ //On change le mot de passe
+        var requete = `UPDATE restaurant
+                       SET nom = ?, adresse = ?, longitude = ?, latitude = ?, telephone = ?, mail = ?, motDePasse = ?, description = ?
+                       WHERE token LIKE ?`;
+        var donnees = [restaurant.nom, restaurant.adresse, restaurant.longitude, restaurant.latitude, restaurant.telephone, restaurant.mail, restaurant.motDePasse, restaurant.description, token];
 
-    var donnees = [restaurant.nom, restaurant.adresse, restaurant.longitude, restaurant.latitude, restaurant.telephone, restaurant.mail, restaurant.motDePasse, restaurant.description, token];
+    }
+    else{ //On ne change pas le mot de passe
+        var requete = `UPDATE restaurant
+                       SET nom = ?, adresse = ?, longitude = ?, latitude = ?, telephone = ?, mail = ?, description = ?
+                       WHERE token LIKE ?`;
+        var donnees = [restaurant.nom, restaurant.adresse, restaurant.longitude, restaurant.latitude, restaurant.telephone, restaurant.mail, restaurant.description, token];
+    }
 
     global.bdd.query(requete, donnees, function(erreur, resultats, champs){
         if(erreur || resultats.affectedRows === 0){

@@ -13,8 +13,12 @@ module.exports = function(parametres, callback){
         throw new Error('Parametres manquants')
 
     //Verification de la validite des parametres envoyes
-    if(!regex.token(parametres.token) || parametres.nom.length > 150 || parametres.adresse.length > 300 ||
-        !regex.telephone(parametres.telephone) || !regex.mail(parametres.mail) || !regex.motDePasse(parametres.motDePasse))
+    if(!regex.token(parametres.token) ||
+       parametres.nom.length > 150 ||
+       parametres.adresse.length > 300 ||
+       !regex.telephone(parametres.telephone) ||
+       !regex.mail(parametres.mail) ||
+       (!regex.motDePasse(parametres.motDePasse) && parametres.motDePasse != ""))
         throw new Error('Mauvais format des parametres');
 
     //On regarde si le numéro et le mail n'est pas deja utilise
