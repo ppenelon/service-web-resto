@@ -95,6 +95,23 @@ exports.definirCodeFidelite = function(codeFidelite, idClient, callback){
     });
 }
 
+//Fonction qui supprime le code de fidélité d'un client en fonction de son code de fidélité
+exports.supprimerCodeFidelite = function(codeFidelite, callback){
+    var requete = `UPDATE client
+                   SET codeFidelite = ''
+                   WHERE codeFidelite LIKE ?`;
+    var donnees = [codeFidelite];
+
+    global.bdd.query(requete, donnees, function(erreur, resultats, champs){
+        if(erreur || resultats.affectedRows === 0){
+            callback({resultat: 0});
+        }
+        else{
+            callback({resultat: 1});
+        }
+    });
+}
+
 exports.deconnecterClient = function(token, callback){
     var requete = `UPDATE client
                    SET token = ''

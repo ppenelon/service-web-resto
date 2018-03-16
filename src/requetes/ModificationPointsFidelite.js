@@ -1,3 +1,4 @@
+const clientDAO = require('../donnees/ClientDAO');
 const fideliteDAO = require('../donnees/FideliteDAO');
 
 const regex = require('../assistants/Regex');
@@ -13,6 +14,13 @@ module.exports = function(parametres, callback){
 
     //On essaye de modifier les points du client
     fideliteDAO.modifierPoints(parametres.codeFidelite, parametres.token, parametres.points, function(resultat){
-        callback({resultat: resultat.resultat});
+        if(resultat.resultat === 0){
+            callback({resultat: 0});
+        }
+        else{
+            clientDAO.supprimerCodeFidelite(parametres.codeFidelite, function(resultat2){
+                callback({resultat: resultat2.resultat});
+            });
+        }
     });
 }

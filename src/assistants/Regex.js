@@ -1,3 +1,7 @@
+exports.md5 = function(champ){
+    return champ.match(/^[0-9a-f]{32}$/) != null;
+}
+
 exports.telephone = function(champ){
     return champ.match(/^[0-9]{10}$/) != null;
 }
@@ -19,7 +23,7 @@ exports.restaurant = function(restaurant){
 }
 
 exports.token = function(champ){
-    return champ.match(/^[0-9a-f]{32}$/) != null;
+    return this.md5(champ);
 }
 
 exports.date = function(champ){
@@ -31,5 +35,5 @@ exports.heure = function(champ){
 }
 
 exports.codeFidelite = function(champ){
-    return this.token(champ);
+    return this.md5(champ);
 }
